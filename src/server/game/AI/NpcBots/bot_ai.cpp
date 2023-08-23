@@ -15415,6 +15415,8 @@ void bot_ai::JustDied(Unit* u)
                 gr->SendUpdate();
     }
 
+    // Ornfelt: don't tele to graveyard if arena
+    //if (IsWanderer() && me->GetMap()->IsBattleground()) // Not needed
     if (IsWanderer() && me->GetMap()->IsBattlegroundOrArena())
     {
         if (Battleground const* bg = GetBG())
@@ -15478,7 +15480,9 @@ void bot_ai::KilledUnit(Unit* u)
     }
 
     //handle BG kill BvP, BvB, BvC
-    if (me->GetMap()->IsBattleground())
+    // Ornfelt: Fix arena
+    //if (me->GetMap()->IsBattleground())
+    if (me->GetMap()->IsBattlegroundOrArena())
     {
         Battleground* bg = GetBG();
         //could be removed from BG
@@ -17647,7 +17651,9 @@ void bot_ai::CommonTimers(uint32 diff)
 
 void bot_ai::UpdateReviveTimer(uint32 diff)
 {
-    if (me->IsAlive())
+    // Ornfelt: Don't revive bots in arena
+    //if (me->IsAlive())
+    if (me->IsAlive() || me->GetMap()->IsBattleArena())
         return;
 
     if (_reviveTimer > diff)        _reviveTimer -= diff;

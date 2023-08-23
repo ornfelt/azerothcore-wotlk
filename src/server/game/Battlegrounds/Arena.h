@@ -56,6 +56,12 @@ protected:
     void UpdateArenaWorldState();
 
     void HandleKillPlayer(Player* player, Player* killer) override;
+    // Ornfelt: npcbot
+    void AddBot(Creature* bot) override;
+    void HandleBotKillPlayer(Creature* killer, Player* victim) override;
+    void HandleBotKillBot(Creature* killer, Creature* victim) override;
+    void HandlePlayerKillBot(Creature* victim, Player* killer) override;
+    //end npcbot
 
 private:
     void RemovePlayerAtLeave(Player* player) override;
