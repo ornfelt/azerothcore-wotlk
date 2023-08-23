@@ -880,7 +880,9 @@ public:
             }
             else if (HasRole(BOT_ROLE_DPS))
             {
-                SEAL = WISDOM && HasRole(BOT_ROLE_HEAL) ? WISDOM : COMMAND ? COMMAND : RIGHT;
+                // Ornfelt: Don't use seal of command (too strong in aoe imo)
+                //SEAL = WISDOM && HasRole(BOT_ROLE_HEAL) ? WISDOM : COMMAND ? COMMAND : RIGHT;
+                SEAL = WISDOM && HasRole(BOT_ROLE_HEAL) ? WISDOM : COMMAND ? VENGEANCE : RIGHT;
             }
             else if (HasRole(BOT_ROLE_HEAL))
                 SEAL = WISDOM ? WISDOM : LIGHT ? LIGHT : RIGHT;

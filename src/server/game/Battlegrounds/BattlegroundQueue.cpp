@@ -223,6 +223,7 @@ GroupQueueInfo* BattlegroundQueue::AddGroup(Player* leader, Group* group, Battle
 
     //npcbot: try to queue wandering bots
     if (!isRated && !arenaType && !arenaTeamId && !sBattlegroundMgr->isTesting())
+    // if (!isRated && !arenaType && !arenaTeamId && !sBattlegroundMgr->isTesting() && !leader->GetGroup()) // Don't allow group queue
     {
         if (!BotDataMgr::GenerateBattlegroundBots(leader, group, this, bracketEntry, ginfo))
         {

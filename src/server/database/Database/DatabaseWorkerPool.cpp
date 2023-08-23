@@ -447,7 +447,8 @@ T* DatabaseWorkerPool<T>::GetFreeConnection()
     {
         std::ostringstream ss;
         ss << boost::stacktrace::stacktrace();
-        LOG_WARN("sql.performances", "Sync query at:\n{}", ss.str());
+        // Ornfelt: Sync query log
+        //LOG_WARN("sql.performances", "Sync query at:\n{}", ss.str());
     }
 #endif
 

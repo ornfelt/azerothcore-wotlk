@@ -157,9 +157,22 @@ void SpawnWandererBot(uint32 bot_id, WanderNode const* spawnLoc, NpcBotRegistry*
     Map* map = sMapMgr->CreateBaseMap(spawnLoc->GetMapId());
     map->LoadGrid(spawnLoc->m_positionX, spawnLoc->m_positionY);
 
-    LOG_DEBUG("npcbots", "Spawning wandering bot: {} ({}) class {} race {} fac {}, location: mapId {} {} ({})",
+    // Ornfelt: bot spawn log
+    //LOG_DEBUG("npcbots", "Spawning wandering bot: {} ({}) class {} race {} fac {}, location: mapId {} {} ({})",
+    LOG_INFO("server.loading", "Spawning wandering bot: {} ({}) class {} race {} fac {}, location: mapId {} {} ({})",
         bot_template.Name.c_str(), bot_id, uint32(bot_extras->bclass), uint32(bot_extras->race), bot_data->faction,
         spawnLoc->GetMapId(), spawnLoc->ToString().c_str(), spawnLoc->GetName().c_str());
+
+    // Ornfelt: Write position to file. Requires:
+    //#include <fstream>
+    //std::ofstream outfile;
+    //outfile.open("./wander_nodes_data/wander_nodes_all.txt", std::ios_base::app); // Append instead of overwrite
+    //outfile << "Spawning wandering bot! Bot: " + std::to_string(bot_id) + ", WP: " + spawnLoc->ToString() + ", name: " + spawnLoc->GetName() + "\n";
+    //outfile.close();
+    // Write to DB
+    if (map->GetEntry()->IsContinent())
+        CharacterDatabase.DirectExecute("INSERT INTO characters_playermap(guid,account,name,class,race,level,gender,position_x,position_y,map,zone,extra_flags,online,taximask,innTriggerId) VALUES ({},1,\"{}\",{},{},{},{},{},{},{},{},64,1,'',1)",
+                bot_id,bot_template.Name.c_str(),uint32(bot_extras->bclass),uint32(bot_extras->race),0,1,spawnLoc->m_positionX,spawnLoc->m_positionY,spawnLoc->GetMapId(),spawnLoc->GetZoneId());
 
     Creature* bot = new Creature();
     if (!bot->LoadBotCreatureFromDB(0, map, true, true, bot_id, &spawnPos))
@@ -297,6 +310,8 @@ private:
 
         ASSERT(!level_nodes.empty());
         WanderNode const* spawnLoc = Acore::Containers::SelectRandomContainerElement(level_nodes);
+        // Ornfelt: Change wander bot spawnloc
+        //WanderNode const* spawnLoc = level_nodes.at(0);
 
         CreatureTemplate& bot_template = _botsWanderCreatureTemplates[next_bot_id];
         //copy all fields
@@ -1459,6 +1474,12 @@ bool BotDataMgr::GenerateBattlegroundBots(Player const* groupLeader, [[maybe_unu
     NpcBotRegistry spawned_bots_a;
     NpcBotRegistry spawned_bots_h;
 
+    // Ornfelt: bot balance
+    //if (queued_players_a > 0)
+    //	needed_bots_count_h -= 1;
+    //else if (queued_players_h > 0)
+    //	needed_bots_count_a -= 1;
+
     if (needed_bots_count_a)
     {
         if (!sBotGen->GenerateWanderingBotsToSpawn(needed_bots_count_a, bg_template->GetMapId(), ALLIANCE, true, bracketEntry, &spawned_bots_a, spawned_a))
@@ -1471,6 +1492,8 @@ bool BotDataMgr::GenerateBattlegroundBots(Player const* groupLeader, [[maybe_unu
                     DespawnWandererBot(bot->GetEntry());
             return false;
         }
+        // Ornfelt: spawn log
+        //LOG_INFO("server.loading", "Spawned {} alliance BG bots", std::to_string(needed_bots_count_a));
     }
     if (needed_bots_count_h)
     {
@@ -1484,6 +1507,8 @@ bool BotDataMgr::GenerateBattlegroundBots(Player const* groupLeader, [[maybe_unu
                     DespawnWandererBot(bot->GetEntry());
             return false;
         }
+        // Ornfelt: spawn log
+        //LOG_INFO("server.loading", "Spawned {} horde BG bots", std::to_string(needed_bots_count_h));
     }
 
     ASSERT(uint32(spawned_bots_a.size()) == needed_bots_count_a);
@@ -2965,6 +2990,10 @@ WanderNode const* BotDataMgr::GetNextWanderNode(WanderNode const* curNode, Wande
                 links.push_back(wp);
         });
     }
+
+    // Ornfelt: old debug log (links empty)
+    if (links.empty())
+        LOG_ERROR("server.loading", "WARNING! links.empty(). BOT ENTRY: {}, lvl: {}, zone: {}, area: {}", bot->GetEntry(), lvl, bot->GetZoneId(), bot->GetAreaId());
 
     ASSERT(!links.empty());
     return links.size() == 1u ? links.front() : Acore::Containers::SelectRandomContainerElement(links);

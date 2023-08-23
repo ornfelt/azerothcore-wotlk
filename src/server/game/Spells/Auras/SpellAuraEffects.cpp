@@ -1930,6 +1930,24 @@ void AuraEffect::HandleAuraModShapeshift(AuraApplication const* aurApp, uint8 mo
 
     modelid = target->GetModelForForm(form, GetId());
 
+    // Ornfelt: debug info...
+    if (target->GetTypeId() == TYPEID_PLAYER);
+    {
+        //LOG_INFO("server.loading", "IN HandleByAuraModShapeshift! modelid: {}", modelid);
+        // Fix strange case where ghost wolf displayid is set to 0...
+        if (modelid == 0)
+        {
+            switch (form)
+            {
+                case FORM_GHOSTWOLF:
+                    modelid = 4613;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     if (apply)
     {
         // remove polymorph before changing display id to keep new display id

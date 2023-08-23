@@ -1536,6 +1536,23 @@ void Unit::CalculateSpellDamageTaken(SpellNonMeleeDamage* damageInfo, int32 dama
             break;
     }
 
+    // Ornfelt: Buff spells
+    // Buff lava burst
+    if (spellInfo->Id == 60043)
+        damage *= 2;
+    // Buff earth shock
+    else if (spellInfo->Id == 49231)
+        damage *= 3;
+    // Buff pyroblast
+    else if (spellInfo->Id == 42891)
+        damage *= 1.4;
+    // Buff CL
+    else if (spellInfo->Id == 49271)
+        damage *= 1.2;
+    // Buff arcane barrage
+    else if (spellInfo->Id == 44425)
+        damage *= 100;
+
     damageInfo->cleanDamage = std::max(0, cleanDamage);
     damageInfo->damage = std::max(0, damage);
 
@@ -4545,7 +4562,12 @@ bool Unit::IsUnderWater() const
 
 void Unit::DeMorph()
 {
+    // Ornfelt: demorph
     SetDisplayId(GetNativeDisplayId());
+    //SetNativeDisplayId(GetNativeDisplayId());
+
+    //SetDisplayId(demorphId);
+    //SetNativeDisplayId(demorphId);
 }
 
 Aura* Unit::_TryStackingOrRefreshingExistingAura(SpellInfo const* newAura, uint8 effMask, Unit* caster, int32* baseAmount /*= nullptr*/, Item* castItem /*= nullptr*/, ObjectGuid casterGUID /*= ObjectGuid::Empty*/, bool periodicReset /*= false*/)
