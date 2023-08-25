@@ -15419,13 +15419,17 @@ void bot_ai::JustDied(Unit* u)
     //if (IsWanderer() && me->GetMap()->IsBattleground()) // Not needed
     if (IsWanderer() && me->GetMap()->IsBattlegroundOrArena())
     {
-        if (Battleground const* bg = GetBG())
+        //if (Battleground const* bg = GetBG())
+        if (Battleground* bg = GetBG())
         {
             if (GraveyardStruct const* gy = bg->GetClosestGraveyardForBot(me))
             {
                 Position pos(gy->x, gy->y, gy->z, me->GetOrientation());
                 Events.AddEventAtOffset([me = me, pos = pos]() { BotMgr::TeleportBot(me, me->GetMap(), &pos, true); }, 5s);
             }
+            // Ornfelt: check win condition (seems to be required if bot gets killed by unit other than bot / player)
+            if (bg->isArena())
+                bg->CheckWinConditions();
         }
     }
     else if (u && (u->IsPvP() || u->IsControlledByPlayer() || u->IsNPCBotOrPet()))
