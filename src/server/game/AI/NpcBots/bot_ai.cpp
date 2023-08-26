@@ -18721,6 +18721,16 @@ void bot_ai::OnBotEnterBattleground()
             }
         });
 
+        // Ornfelt: Remove arena_prep since otherwise npcbots will be invisible until it's removed
+        if (bg->isArena())
+        {
+            //me->CastSpell(me, SPELL_ARENA_PREPARATION, true);
+            for (MapReference const& ref : me->GetMap()->GetPlayers())
+                if (Player* player = ref.GetSource())
+                    if (player->HasAuraType(SPELL_AURA_ARENA_PREPARATION))
+                        player->RemoveAurasDueToSpell(SPELL_ARENA_PREPARATION);
+        }
+
         SetBotCommandState(BOT_COMMAND_STAY);
         if (startNode)
         {
