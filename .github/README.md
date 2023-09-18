@@ -5,11 +5,11 @@
 My custom changes include:
 * Arena skirmish with npcbots. Currently, I've only added Nagrand Arena. You can queue 2v2, 3v3 and 5v5 and the npcbots will automatically join the queue just like in BGs. You need this commit to add [this](https://github.com/ornfelt/azerothcore-wotlk/commit/f7856d31eb32975d43cc8b849526e46c85594b8c) feature, and ideally [this](https://github.com/ornfelt/azerothcore-wotlk/commit/0739541191eff3c91ee91e1eb31673cecb84bb88) one as well.
 
-![Arena skirmish with npcbots](images/arena.gif?raw=true)
+![Arena skirmish with npcbots](images/arena.png?raw=true)
 
 * Compatability with https://github.com/ornfelt/wander_nodes_util. See [this](https://github.com/ornfelt/azerothcore-wotlk/commit/2399ea767097d2a227aa37c860c1feee63e27598#diff-821d8443e5562c441172343cb58672bed4f1275e800e3ea08e9436c5eb2f4e7a) commit for required changes (look DB execution in both bot_ai.cpp and botdatamgr.cpp):
 
-![Bot map Outland](images/botmap_outland.gif?raw=true)
+![Bot map Outland](images/botmap_outland.png?raw=true)
 
 
 ## Build Status
