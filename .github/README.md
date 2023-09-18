@@ -1,5 +1,17 @@
 # ![logo](https://raw.githubusercontent.com/azerothcore/azerothcore.github.io/master/images/logo-github.png) AzerothCore
 
+## My custom changes
+
+My custom changes include:
+* Arena skirmish with npcbots. Currently, I've only added Nagrand Arena. You can queue 2v2, 3v3 and 5v5 and the npcbots will automatically join the queue just like in BGs. You need this commit to add [this](https://github.com/ornfelt/azerothcore-wotlk/commit/f7856d31eb32975d43cc8b849526e46c85594b8c) feature, and ideally [this](https://github.com/ornfelt/azerothcore-wotlk/commit/0739541191eff3c91ee91e1eb31673cecb84bb88) one as well.
+
+[Arena skirmish with npcbots](../images/arena.gif?raw=true "Arena skrmish with npcbots")
+
+* Compatability with https://github.com/ornfelt/wander_nodes_util. See [this](https://github.com/ornfelt/azerothcore-wotlk/commit/2399ea767097d2a227aa37c860c1feee63e27598#diff-821d8443e5562c441172343cb58672bed4f1275e800e3ea08e9436c5eb2f4e7a) commit for required changes (look DB execution in both bot_ai.cpp and botdatamgr.cpp):
+
+![Bot map Outland](./images/botmap_outland.gif?raw=true "Bot map Outland")
+
+
 ## Build Status
 
 3.3.5
@@ -10,7 +22,6 @@
 ## Introduction
 
 AzerothCore is an open-source game server application and framework designed for hosting massively multiplayer online role-playing games (MMORPGs). It is based on the popular MMORPG World of Warcraft (WoW) and seeks to recreate the gameplay experience of the original game from patch 3.3.5a.
-
 The original code is based on MaNGOS, TrinityCore, and SunwellCore and has since then had extensive development to improve stability, in-game mechanics, and modularity to the game. AC has also grown into a community-driven project with a significant number of contributors and developers. It is written in C++ and provides a solid foundation for creating private servers that mimic the mechanics and behavior of the official WoW servers.
 
 [NPCBots](https://github.com/trickerer/Trinity-Bots) is AzerothCore mod.

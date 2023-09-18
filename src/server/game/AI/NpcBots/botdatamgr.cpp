@@ -160,8 +160,8 @@ void SpawnWandererBot(uint32 bot_id, WanderNode const* spawnLoc, NpcBotRegistry*
     map->LoadGrid(spawnLoc->m_positionX, spawnLoc->m_positionY);
 
     // Ornfelt: bot spawn log
-    //LOG_DEBUG("npcbots", "Spawning wandering bot: {} ({}) class {} race {} fac {}, location: mapId {} {} ({})",
-    LOG_INFO("server.loading", "Spawning wandering bot: {} ({}) class {} race {} fac {}, location: mapId {} {} ({})",
+    LOG_DEBUG("npcbots", "Spawning wandering bot: {} ({}) class {} race {} fac {}, location: mapId {} {} ({})",
+    //LOG_INFO("server.loading", "Spawning wandering bot: {} ({}) class {} race {} fac {}, location: mapId {} {} ({})",
         bot_template.Name.c_str(), bot_id, uint32(bot_extras->bclass), uint32(bot_extras->race), bot_data->faction,
         spawnLoc->GetMapId(), spawnLoc->ToString().c_str(), spawnLoc->GetName().c_str());
 
