@@ -17767,9 +17767,6 @@ void bot_ai::Evade()
                 LOG_INFO("server.loading", "Bot {} id {} class {} level {} map {} TELEPORTING to node {} ('{}') map {}, {}, dist {} yd!",
                     me->GetName().c_str(), me->GetEntry(), uint32(_botclass), uint32(me->GetLevel()), me->GetMapId(), _travel_node_cur->GetWPId(),
                     _travel_node_cur->GetName().c_str(), uint32(mapid), pos.ToString().c_str(), me->GetExactDist(pos));
-                // Ornfelt: Does this happen in nagrand arena???
-                if (mapid == 559 || me->GetMap()->GetId() == 559)
-                    LOG_ERROR("server.loading", "BOT TELEPORTING IN ARENA! WP: {}", _travel_node_last ? _travel_node_last->GetWPId() : 0);
             }
 
             evadeDelayTimer = 12000;
