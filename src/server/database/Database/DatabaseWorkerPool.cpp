@@ -40,12 +40,16 @@
 #endif
 
 #if MARIADB_VERSION_ID >= 100600
-#define MIN_MYSQL_SERVER_VERSION 100500u
 #define MIN_MYSQL_CLIENT_VERSION 30203u
 #else
-#define MIN_MYSQL_SERVER_VERSION 50700u
 #define MIN_MYSQL_CLIENT_VERSION 50700u
 #endif
+
+// The server minimum follows the server, not the client library: built against MariaDB
+// Connector/C, a MySQL 8 server (80xxx) was held to MariaDB's 10.5 (100500) and refused.
+#define MIN_MYSQL_SERVER_VERSION 50700u
+#define MIN_MARIADB_SERVER_VERSION 100500u
+#define FIRST_MARIADB_SERVER_VERSION 100000u // MariaDB 10.0; MySQL versions stay below it
 
 class PingOperation : public SQLOperation
 {
@@ -402,7 +406,8 @@ uint32 DatabaseWorkerPool<T>::OpenConnections(InternalIndex type, uint8 numConne
             _connections[type].clear();
             return error;
         }
-        else if (connection->GetServerVersion() < MIN_MYSQL_SERVER_VERSION)
+        else if (uint32 serverVersion = connection->GetServerVersion();
+            serverVersion < (serverVersion >= FIRST_MARIADB_SERVER_VERSION ? MIN_MARIADB_SERVER_VERSION : MIN_MYSQL_SERVER_VERSION))
         {
             LOG_ERROR("sql.driver", "AzerothCore does not support MySQL versions below 5.7 or MariaDB versions below 10.5.\n\nFound server version: {}. Server compiled with: {}.",
                 connection->GetServerVersion(), MYSQL_VERSION_ID);
